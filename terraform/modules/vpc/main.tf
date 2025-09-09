@@ -64,6 +64,14 @@ resource "aws_security_group" "elb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "Allow HTTPS from anywhere"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0
@@ -91,6 +99,16 @@ resource "aws_security_group" "ec2_sg" {
     security_groups  = [aws_security_group.elb_sg.id]
   }
 
+
+  ingress {
+    description = "Allow SSH (admin access)"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # restrict to your IP in production
+  }
+
+  
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0

@@ -45,18 +45,57 @@ resource "aws_iam_role_policy_attachment" "ec2_attach" {
   policy_arn = aws_iam_policy.ec2_policy.arn
 }
 
+# Attach S3 Full Access
+resource "aws_iam_role_policy_attachment" "ec2_s3_attach" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+# Attach CloudWatch Agent Policy
+resource "aws_iam_role_policy_attachment" "ec2_cw_attach" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
 resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${var.name}-ec2-profile"
   role = aws_iam_role.ec2_role.name
 }
+
+
+# -----------------------------
+# Ubuntu AMI Lookup
+# -----------------------------
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
 
 # -----------------------------
 # Launch Template
 # -----------------------------
 resource "aws_launch_template" "django" {
   name          = "${var.name}-launch-template"
-  image_id      = var.ami_id
+  image_id      = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
+  key_name = "dgitite"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.ec2_profile.name

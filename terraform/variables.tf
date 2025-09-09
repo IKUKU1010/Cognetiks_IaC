@@ -47,10 +47,6 @@ variable "max_size" {
   default     = 4
 }
 
-variable "ami_id" {
-  default = "ami-0c02fb55956c7d316" # Amazon Linux 2
-}
-
 variable "db_username" {
   default = "django"
   type        = string

@@ -46,7 +46,6 @@ module "elb" {
 module "ec2" {
   source        = "./modules/ec2"
   name          = var.name
-  ami_id        = var.ami_id
   instance_type = var.instance_type
   subnets       = module.vpc.public_subnets
   desired_capacity = 2
@@ -55,7 +54,8 @@ module "ec2" {
 
   ec2_sg_id       = module.vpc.ec2_sg_id
   elb_name        = module.elb.name
-
+  elb_dns_name    = module.elb.dns_name
+  
   # Pass RDS and S3 info
   db_endpoint     = module.rds.db_endpoint
   db_password     = module.rds.db_password

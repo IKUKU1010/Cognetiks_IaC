@@ -190,16 +190,16 @@ terraform destroy -auto-approve
 
 ---
 
-## 13. Architecture Diagram
+## 13. Project Architecture
 
-📌 *Insert diagram image here*  
-`![Architecture](images/architecture.png)`
+
+![Project Architecture](img/arc.png)
 
 ---
 
 ## 14. Screenshots
 
-📌 *Insert collected screenshots here*  
+
 
 - ![App test run](img/test-run.png)
 - ![Terraform init](img/Terraform-init.png)  
@@ -226,5 +226,5 @@ terraform destroy -auto-approve
 
 ## 15. Continuous improvement
 
-- There is much work still to do and I will continue to improve on the application**  
+- There is much work still to do on this project and I will continue to improve on the application**  
  
